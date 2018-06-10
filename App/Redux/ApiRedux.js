@@ -4,7 +4,7 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  connect: ['username'],
+  connect: null,
   connectionOk: null,
   connectionFailed: null,
   send: ['message'],

@@ -71,4 +71,4 @@
 
 # react-native-config
 
--keep class com.cboard.BuildConfig { *; }
+-keep class com.federicosalvi.cboard.BuildConfig { *; }

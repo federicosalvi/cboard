@@ -2,6 +2,7 @@ import { eventChannel } from 'redux-saga'
 import { all, call, put, take, select, race } from 'redux-saga/effects'
 import ApiActions, { ApiTypes } from '../Redux/ApiRedux'
 import { ConnectivityTypes, isConnected } from '../Redux/ConnectivityRedux'
+import { getUsername, getToken } from '../Redux/UserRedux'
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 const STOP_WEBSOCKET = { type: 'STOP_WEBSOCKET' }
@@ -42,7 +43,9 @@ function * executeTask (socketChannel) {
   }
 }
 
-export function * connect (api, { username }) {
+export function * connect (api) {
+  let username = yield select(getUsername)
+  let token = yield select(getToken)
   while (true) {
     // if offline, wait for connectivity changes
     if (!select(isConnected)) {
@@ -57,7 +60,7 @@ export function * connect (api, { username }) {
       })
 
       if (conn) {
-        socket.send(JSON.stringify({ command: 'open', user: username }))
+        socket.send(JSON.stringify({ command: 'open', user: username, token }))
         yield put(ApiActions.connectionOk())
       } else {
         yield put(ApiActions.connectionFailed())

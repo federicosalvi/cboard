@@ -28,7 +28,7 @@ class DrawScreen extends Component {
   }
 
   componentDidMount = () => {
-    this.props.connect(this.props.username)
+    this.props.connect()
     if (this.canvas != null && !this.decorated) {
       let counter = 0
       let that = this
@@ -95,8 +95,10 @@ class DrawScreen extends Component {
 
   stopDrawing = (user) => {
     this.markerStyles[user] = null
-    this.canvas.deletePath(this.tempPath[user].path.id)
-    this.tempPath[user] = null
+    if (this.tempPath[user] != null) {
+      this.canvas.deletePath(this.tempPath[user].path.id)
+      this.tempPath[user] = null
+    }
   }
 
   componentWillReceiveProps (newProps) {
@@ -165,6 +167,10 @@ class DrawScreen extends Component {
     this.canvas.clear()
   }
 
+  poke = () => {
+    this.send({command: 'poke'})
+  }
+
   render () {
     let markers = []
     Object.keys(this.markerStyles).forEach((key) => {
@@ -181,6 +187,9 @@ class DrawScreen extends Component {
             <View style={styles.border}>
               <TouchableOpacity style={[styles.functionButton, {backgroundColor: 'gray'}]} onPress={this.props.goBack}>
                 <Text style={{color: 'white'}}>Back</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.functionButton} onPress={this.poke}>
+                <Text style={{color: 'white'}}>Poke</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.functionButton} onPress={this.clear}>
                 <Text style={{color: 'white'}}>Clear</Text>
@@ -254,7 +263,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  connect: (username) => dispatch(ApiActions.connect(username)),
+  connect: () => dispatch(ApiActions.connect()),
   send: (message) => dispatch(ApiActions.send(message)),
   goBack: () => dispatch(NavigationActions.back())
 })

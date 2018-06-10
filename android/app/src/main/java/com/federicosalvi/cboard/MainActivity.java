@@ -1,4 +1,4 @@
-package com.cboard;
+package com.federicosalvi.cboard;
 
 import com.facebook.react.ReactActivity;
 
