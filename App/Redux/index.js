@@ -11,7 +11,7 @@ export const reducers = persistReducer(config, combineReducers({
   nav: require('./NavigationRedux').reducer,
   api: require('./ApiRedux').reducer,
   user: require('./UserRedux').reducer,
-  connectivity: require('./ConnectivityRedux').reducer
+  appState: require('./AppStateRedux').reducer
 }))
 
 export default () => {

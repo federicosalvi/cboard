@@ -65,3 +65,10 @@ The `.env` file is ignored by git keeping those secrets out of your repo.
 2. Add your config variables
 3. Follow instructions at [https://github.com/luggit/react-native-config#setup](https://github.com/luggit/react-native-config#setup)
 4. Done!
+
+### TODO
+1. handle when app goes to background while drawing
+2. add color wheel, color indicator
+3. add stroke width indicator
+4. better UI
+5. FUTURE: allow creation of rooms, one drawing per room

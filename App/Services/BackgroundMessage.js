@@ -7,7 +7,9 @@ export default async (message) => {
     .setTitle('Hey There!')
     .setBody(message.data.text)
     .android.setChannelId('cboard')
+    .android.setVibrate([300, 500])
     .android.setSmallIcon('ic_launcher')
+    .android.setOnlyAlertOnce(true)
   firebase.notifications().displayNotification(notification)
   return Promise.resolve()
 }

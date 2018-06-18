@@ -154,21 +154,27 @@ class DrawScreen extends Component {
   }
 
   undoPath = (id) => {
-    let paths = this.canvas.getPaths().filter(path => path.drawer === this.props.username)
-    if (paths.length > 0) {
-      id = paths[paths.length - 1].path.id
-      this.canvas.deletePath(id)
-      this.send({command: 'remove', item: id})
+    if (this.props.online) {
+      let paths = this.canvas.getPaths().filter(path => path.drawer === this.props.username)
+      if (paths.length > 0) {
+        id = paths[paths.length - 1].path.id
+        this.canvas.deletePath(id)
+        this.send({command: 'remove', item: id})
+      }
     }
   }
 
   clear = () => {
-    this.send({command: 'clear'})
-    this.canvas.clear()
+    if (this.props.online) {
+      this.send({command: 'clear'})
+      this.canvas.clear()
+    }
   }
 
   poke = () => {
-    this.send({command: 'poke'})
+    if (this.props.online) {
+      this.send({command: 'poke'})
+    }
   }
 
   render () {
@@ -220,6 +226,7 @@ class DrawScreen extends Component {
                 this.height = event.nativeEvent.layout.height
               }}
             >
+              { this.props.online || <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, backgroundColor: 'gray' }} />}
               {markers}
               <SketchCanvas
                 ref={ref => { this.canvas = ref }}
@@ -228,6 +235,7 @@ class DrawScreen extends Component {
                 strokeWidth={this.state.thickness}
                 onStrokeEnd={this.sendPath}
                 user={this.props.username}
+                touchEnabled={this.props.online}
               />
             </View>
             <View style={styles.border}>
@@ -259,7 +267,8 @@ class DrawScreen extends Component {
 const mapStateToProps = (state) => ({
   username: state.user.username,
   message: state.api.message,
-  online: state.api.connected
+  online: state.api.connected,
+  foreground: state.appState.appState === 'active'
 })
 
 const mapDispatchToProps = (dispatch) => ({

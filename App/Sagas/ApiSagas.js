@@ -1,7 +1,7 @@
 import { eventChannel } from 'redux-saga'
 import { all, call, put, take, select, race } from 'redux-saga/effects'
 import ApiActions, { ApiTypes } from '../Redux/ApiRedux'
-import { ConnectivityTypes, isConnected } from '../Redux/ConnectivityRedux'
+import { AppStateTypes, isConnected } from '../Redux/AppStateRedux'
 import { getUsername, getToken } from '../Redux/UserRedux'
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
@@ -49,7 +49,7 @@ export function * connect (api) {
   while (true) {
     // if offline, wait for connectivity changes
     if (!select(isConnected)) {
-      yield take(ConnectivityTypes.SET_IS_CONNECTED)
+      yield take(AppStateTypes.SET_IS_CONNECTED)
     } else { // attempt connections only when online
       const socket = new WebSocket(api.baseURL)
 
