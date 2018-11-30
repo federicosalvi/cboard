@@ -1,29 +1,16 @@
-import React from 'react'
 import { connect } from 'react-redux'
 import AppNavigation from './AppNavigation'
-// for react-navigation 1.0.0-beta.30
-import {
-  createReduxBoundAddListener,
-  createReactNavigationReduxMiddleware
-} from 'react-navigation-redux-helpers'
+import { createReactNavigationReduxMiddleware, reduxifyNavigator } from 'react-navigation-redux-helpers'
 
-createReactNavigationReduxMiddleware(
+export const navMiddleware = createReactNavigationReduxMiddleware(
   'root',
   state => state.nav
 )
-const addListener = createReduxBoundAddListener('root')
-// end for react-navigation 1.0.0-beta.30
+const App = reduxifyNavigator(AppNavigation, 'root')
 
-// here is our redux-aware smart component
-function ReduxNavigation (props) {
-  const { dispatch, nav } = props
+const mapStateToProps = (state) => ({
+  state: state.nav
+})
+const AppWithNavigationState = connect(mapStateToProps)(App)
 
-  return <AppNavigation navigation={{
-    dispatch,
-    state: nav,
-    addListener
-  }} />
-}
-
-const mapStateToProps = state => ({ nav: state.nav })
-export default connect(mapStateToProps)(ReduxNavigation)
+export default AppWithNavigationState
