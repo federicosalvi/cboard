@@ -43,11 +43,11 @@ class LaunchScreen extends Component {
               maxLength={10}
               textAlign='center'
               enablesReturnKeyAutomatically
-              onChangeText={(text) => this.setState({username: text})}
+              onChangeText={(text) => this.setState({ username: text })}
               onSubmitEditing={this.goToDrawScreen}
             />
             <TouchableOpacity disabled={disabled} style={[styles.button, buttonStyle]} onPress={this.goToDrawScreen}>
-              <Text style={{color: buttonColor}}>Go!</Text>
+              <Text style={{ color: buttonColor }}>Go!</Text>
             </TouchableOpacity>
           </View>
 
