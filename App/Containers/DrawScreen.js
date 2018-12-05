@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Text, View, TouchableOpacity } from 'react-native'
 import { SketchCanvas } from '@terrylinla/react-native-sketch-canvas'
-import Toast, {DURATION} from 'react-native-easy-toast'
+import Toast, { DURATION } from 'react-native-easy-toast'
 import { connect } from 'react-redux'
 import { NavigationActions } from 'react-navigation'
 import ApiActions from '../Redux/ApiRedux'
@@ -37,14 +37,14 @@ class DrawScreen extends Component {
       let onResponderGrantOld = this.canvas.panResponder.panHandlers.onResponderGrant
       this.canvas.panResponder.panHandlers.onResponderGrant = function onResponderGrant (evt, gestureState) {
         let { locationX, locationY } = evt.nativeEvent
-        that.send({command: 'draw', coords: { x: locationX, y: locationY }})
+        that.send({ command: 'draw', coords: { x: locationX, y: locationY } })
         return onResponderGrantOld(evt, gestureState)
       }
 
       this.canvas.panResponder.panHandlers.onResponderMove = function onResponderMove (evt, gestureState) {
         let { locationX, locationY } = evt.nativeEvent
         if (counter % 4 === 0) {
-          that.send({command: 'draw', coords: { x: locationX, y: locationY }})
+          that.send({ command: 'draw', coords: { x: locationX, y: locationY } })
         }
         counter = counter + 1
         return onResponderMoveOld(evt, gestureState)
@@ -60,7 +60,7 @@ class DrawScreen extends Component {
 
   tempId = 2000
 
-  draw = (user, {x, y}) => {
+  draw = (user, { x, y }) => {
     if (this.tempPath[user] == null) {
       this.tempPath[user] = {
         drawer: user,
@@ -150,7 +150,7 @@ class DrawScreen extends Component {
   }
 
   sendPath = (path) => {
-    this.send({command: 'add', item: path})
+    this.send({ command: 'add', item: path })
   }
 
   undoPath = (id) => {
@@ -159,21 +159,21 @@ class DrawScreen extends Component {
       if (paths.length > 0) {
         id = paths[paths.length - 1].path.id
         this.canvas.deletePath(id)
-        this.send({command: 'remove', item: id})
+        this.send({ command: 'remove', item: id })
       }
     }
   }
 
   clear = () => {
     if (this.props.online) {
-      this.send({command: 'clear'})
+      this.send({ command: 'clear' })
       this.canvas.clear()
     }
   }
 
   poke = () => {
     if (this.props.online) {
-      this.send({command: 'poke'})
+      this.send({ command: 'poke' })
     }
   }
 
@@ -191,23 +191,23 @@ class DrawScreen extends Component {
         <View style={{ flex: 1, flexDirection: 'row' }}>
           <View style={{ flex: 1, flexDirection: 'column' }}>
             <View style={styles.border}>
-              <TouchableOpacity style={[styles.functionButton, {backgroundColor: 'gray'}]} onPress={this.props.goBack}>
-                <Text style={{color: 'white'}}>Back</Text>
+              <TouchableOpacity style={[styles.functionButton, { backgroundColor: 'gray' }]} onPress={this.props.goBack}>
+                <Text style={{ color: 'white' }}>Back</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.functionButton} onPress={this.poke}>
-                <Text style={{color: 'white'}}>Poke</Text>
+                <Text style={{ color: 'white' }}>Poke</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.functionButton} onPress={this.clear}>
-                <Text style={{color: 'white'}}>Clear</Text>
+                <Text style={{ color: 'white' }}>Clear</Text>
               </TouchableOpacity>
-              <View style={{flexDirection: 'row'}}>
+              <View style={{ flexDirection: 'row' }}>
                 <TouchableOpacity style={styles.functionButton} onPress={() => {
                   if (this.state.thickness > 64) {
                     return
                   }
                   this.setState({ thickness: this.state.thickness * 2 })
                 }}>
-                  <Text style={{color: 'white'}}>Thick</Text>
+                  <Text style={{ color: 'white' }}>Thick</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.functionButton} onPress={() => {
                   if (this.state.thickness === 1) {
@@ -215,7 +215,7 @@ class DrawScreen extends Component {
                   }
                   this.setState({ thickness: this.state.thickness / 2 })
                 }}>
-                  <Text style={{color: 'white'}}>Thin</Text>
+                  <Text style={{ color: 'white' }}>Thin</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -239,21 +239,21 @@ class DrawScreen extends Component {
               />
             </View>
             <View style={styles.border}>
-              <View style={{flexDirection: 'row'}}>
-                <TouchableOpacity style={[styles.functionButton, {backgroundColor: 'red'}]} onPress={() => {
+              <View style={{ flexDirection: 'row' }}>
+                <TouchableOpacity style={[styles.functionButton, { backgroundColor: 'red' }]} onPress={() => {
                   this.setState({ color: '#FF0000' })
                 }}>
-                  <Text style={{color: 'white'}}>Red</Text>
+                  <Text style={{ color: 'white' }}>Red</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.functionButton, {backgroundColor: 'black'}]} onPress={() => {
+                <TouchableOpacity style={[styles.functionButton, { backgroundColor: 'black' }]} onPress={() => {
                   this.setState({ color: '#000000' })
                 }}>
-                  <Text style={{color: 'white'}}>Black</Text>
+                  <Text style={{ color: 'white' }}>Black</Text>
                 </TouchableOpacity>
               </View>
-              <Text style={{marginRight: 8, fontSize: 20}}>{ this.state.color }</Text>
-              <TouchableOpacity style={[styles.functionButton, {backgroundColor: 'black', width: 90}]} onPress={this.undoPath}>
-                <Text style={{color: 'white'}}>Undo</Text>
+              <Text style={{ marginRight: 8, fontSize: 20 }}>{ this.state.color }</Text>
+              <TouchableOpacity style={[styles.functionButton, { backgroundColor: 'black', width: 90 }]} onPress={this.undoPath}>
+                <Text style={{ color: 'white' }}>Undo</Text>
               </TouchableOpacity>
             </View>
           </View>
